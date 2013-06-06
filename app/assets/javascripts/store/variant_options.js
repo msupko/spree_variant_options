@@ -176,9 +176,9 @@ function VariantOptions(params) {
     if (variant) {
       $('#variant_id, form[data-form-type="variant"] input[name$="[variant_id]"]').val(variant.id);
       $('#product-price .price').removeClass('unselected').text(variant.price);
-      if (variant.count > 0 || allow_backorders)
-        $('#cart-form button[type=submit]').attr('disabled', false).fadeTo(100, 1);
-      $('form[data-form-type="variant"] button[type=submit]').attr('disabled', false).fadeTo(100, 1);
+      if (variant.count > 0 || allow_backorders) {
+        $('#cart-form button[type=submit], form[data-form-type="variant"] button[type=submit]').unbind('click').fadeTo(100, 1);
+      }
       try {
         show_variant_images(variant.id);
       } catch(error) {
@@ -186,7 +186,10 @@ function VariantOptions(params) {
       }
     } else {
       $('#variant_id, form[data-form-type="variant"] input[name$="[variant_id]"]').val('');
-      $('#cart-form button[type=submit], form[data-form-type="variant"] button[type=submit]').attr('disabled', true).fadeTo(0, 0.5);
+      $('#cart-form button[type=submit], form[data-form-type="variant"] button[type=submit]').click(function() { 
+          alert("Please select size and/or color before proceeding.");
+          return false;
+        }).fadeTo(0, 0.5);
       price = $('#product-price .price').addClass('unselected')
     }
   }
